@@ -30,12 +30,7 @@ namespace soduku
             get
             {
                 List<int> allowed = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-                Indices.ForEach(i =>
-                {
-                    int val = _cells[i];
-                    if (val > 0)
-                        allowed.Remove(val);
-                });
+                Indices.ForEach(i => allowed.Remove(_cells[i]));
                 return allowed;
             }
         }
@@ -43,7 +38,7 @@ namespace soduku
         public Base(List<int> cells)
         {
             _cells = cells;
-            Indices = new List<int>();
+            Indices = new List<int>(9);
         }
 
         /// <summary>
@@ -89,11 +84,8 @@ namespace soduku
         public Column(int col, List<int> cells) : base(cells)
         {
             ColumnNum = col;
-            for (int i = 0; i < cells.Count; ++i)
-            {
-                if(i % 9 == col)
-                    Indices.Add(i);
-            }
+            for (int i = 0; i < 9; ++i)
+                Indices.Add(i * 9 + col);
         }
     }
 

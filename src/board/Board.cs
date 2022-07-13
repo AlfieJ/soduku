@@ -52,7 +52,7 @@ namespace soduku
             _cells = new List<int>(9 * 9);
             _bases = new List<Base>(9 * 3);
             _rows = new List<Row>(9);
-            _cellToBaseMap = new Dictionary<int, List<Base>>();
+            _cellToBaseMap = new Dictionary<int, List<Base>>(9 * 9);
 
             _cells.Fill(0);
 
@@ -110,18 +110,10 @@ namespace soduku
                     _bases.Add(b);
                 }
 
+            for (int i = 0; i < 81; ++i)
+                _cellToBaseMap[i] = new List<Base>(3);
             _bases.ForEach(b =>
-            {
-                b.Indices.ForEach(i =>
-                {
-                    if(_cellToBaseMap.TryGetValue(i, out List<Base> list) == false)
-                    {
-                        list = new List<Base>();
-                        _cellToBaseMap[i] = list;
-                    }
-                    list.Add(b);
-                });
-            });
+                b.Indices.ForEach(i => _cellToBaseMap[i].Add(b)));
         }
 
         private List<int> AcceptableValues(int index)
